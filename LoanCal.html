@@ -80,10 +80,18 @@
 
 
 <script type = "text/JavaScript">
-	var count = 0;
+	var count = 2;
 function interestCal()
 	{
 		
+		count++;
+		if((count%2)==0)
+		{
+			document.getElementById("btnClear").click();
+			interestCal();
+			document.getElementById("btnClear").click();
+			
+		}
 		
 		
 		
@@ -101,12 +109,15 @@ function interestCal()
 		
 		
 		var interestrate = parseFloat(document.getElementById("interestrate").value);
+		var instot = 0;
+		var inttot = 0;
 		
 		while(monthvalue != totalmonths)
 		{
 			monthvalue++;
 			var interestamount = capital * (interestrate/100);
 			var totalamount = monthlyamount + interestamount;
+			
 			
 			var table = document.getElementById("tblLoan");
 			var row = table.insertRow(-1);
@@ -116,20 +127,25 @@ function interestCal()
 			var cell4 = row.insertCell(3);
 			var cell5 = row.insertCell(4);
 			cell1.innerHTML = monthvalue;
-			cell2.innerHTML = monthlyamount.toFixed(2);
-			cell3.innerHTML = interestamount.toFixed(2);
-			cell4.innerHTML = totalamount.toFixed(2);
-			cell5.innerHTML = capital.toFixed(2);
-			
-			
+			cell2.innerHTML = monthlyamount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			cell3.innerHTML = interestamount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			cell4.innerHTML = totalamount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			cell5.innerHTML = capital.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			instot = instot+totalamount;
+			document.getElementById("installmenttotal").value = instot.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			inttot = inttot + interestamount;
+			document.getElementById("totalinterestamount").value = inttot.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 			capital = capital - monthlyamount;
 
 			
 		}
 		
-					
+		
+		
 	}
+	
+		
 </script>
 
 <script>
@@ -139,11 +155,21 @@ function clearTable()
 			while(table.rows.length>0)
 			{
 				table.deleteRow(1);
-				
+				document.getElementById("installmenttotal").value = "0.00";
+				document.getElementById("totalinterestamount").value = "0.00";
 			}
 			
 			
+			
 		}
+		
+		var input = document.getElementById("bodyid");
+		input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("btnCal").click();
+  }
+});
 		
 </script>
 
@@ -152,7 +178,7 @@ function clearTable()
 
 <div class="p-3 mb-2 bg-secondary text-white">
  
-  <center>© Pasan Yasara</center>
+  <center>Â© Pasan Yasara</center>
  
  </div> 
 
